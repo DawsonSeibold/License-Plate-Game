@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14270.9" systemVersion="17F77" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Games" representedClassName="Games" syncable="YES" codeGenerationType="class">
+        <attribute name="game" optional="YES" attributeType="Transformable" customClassName="Game" syncable="YES"/>
+        <attribute name="gameName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Games" positionX="-63" positionY="-18" width="128" height="75"/>
+    </elements>
+</model>
