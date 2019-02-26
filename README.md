@@ -1,19 +1,19 @@
 # Licence Plate Game
 
-A recreation of the classic road trip game where you try to find as many state's licence plates as posible.
+A recreation of the classic road trip game where you try to find as many state's license plates as possible.
 
 ## What I Used / Learned
 - UICollectionViews
-     - Custom Resuable Cell Classes
+     - Custom Reusable Cell Classes
      - Custom Appear Animations (Using CATranformation)
 - UITableViews
-     - Custom Resuable Cell Classes
+     - Custom Reusable Cell Classes
 - Custom UITextField Input Views
 - Custom Views (Subclassing UIView)
 - Created Custom Delegates
-- Used Storyboard and Programmic UI
+- Used Storyboard and Programmatically added UI
 - UIPropertyAnimator
 - Core data (Insert, Update, Delete)
 - Structs & Enums
-- Auto Layout (Storyboard & Programmically)
+- Auto Layout (Storyboard & Programmatically)
 - UIPickerViews, UISearchBar
