@@ -21,7 +21,7 @@ class CreateGameCollectionViewCell: UICollectionViewCell {
         createGameText.adjustsFontSizeToFitWidth = true
         createGameText.text = "Start New Game"
         createGameText.textColor = .white
-        createGameText.font = UIFont.boldSystemFont(ofSize: 25)
+        createGameText.font = UIFont.boldSystemFont(ofSize: 30)
         createGameText.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(createGameText)
         
@@ -34,7 +34,7 @@ class CreateGameCollectionViewCell: UICollectionViewCell {
         self.layer.cornerRadius = 12
         self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 1
-        self.backgroundColor = UIColor(red: 0/255, green: 128/255, blue: 255/255, alpha: 1.0)
+        self.backgroundColor = UIColor.Custom.Gunmetal
     }
     
     required init?(coder aDecoder: NSCoder) {

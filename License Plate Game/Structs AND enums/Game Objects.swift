@@ -119,7 +119,11 @@ class PlayerExportable: NSObject, NSCoding {
         self.type = player.type.rawValue
         self.score = player.score
         self.isWinning = player.isWinning
-        self.foundStates = player.foundStates.map { $0.abbreviation }
+        print("Found States: \(player.foundStates)")
+        self.foundStates = player.foundStates.map {
+            print("Abbrevation \($0.abbreviation)")
+            return $0.abbreviation
+        }
 //        self.peerID = player.peerID
         self.connection = player.connection.rawValue
     }

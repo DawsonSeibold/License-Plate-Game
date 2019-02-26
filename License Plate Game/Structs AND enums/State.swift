@@ -23,7 +23,7 @@ struct State: Equatable {
     
     init(state: States) {
 //        self.capital = state.capital
-//        self.abbreviation = state.abbreviation
+        self.abbreviation = state.abbreviation
         self.name = state.description
         
         self.object = state

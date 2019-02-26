@@ -61,9 +61,19 @@ class ClassicGameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        var playerAlreadyAdded = false
         let playerName = NSFullUserName()
-        currentPlayer = Player(playerName: playerName, playerType: .Owner)
-        currentGame.addNewPlayer(newPlayer: currentPlayer)
+        for player in currentGame.players {
+            if player.name == playerName {
+                playerAlreadyAdded = true
+                currentPlayer = player
+                break
+            }
+        }
+        if !playerAlreadyAdded {
+            currentPlayer = Player(playerName: playerName, playerType: .Owner)
+            currentGame.addNewPlayer(newPlayer: currentPlayer)
+        }
         
 //        currentGame.addNewPlayer(newPlayer: Player(playerName: "Diane"))
 //        currentGame.addNewPlayer(newPlayer: Player(name: "Jackson", identifier: UUID(), type: PlayerType.Player , score: 2, isWinning: true, foundStates: []))
@@ -84,9 +94,6 @@ class ClassicGameViewController: UIViewController {
         statesTableView.delegate = self
         statesTableView.dataSource = self
         statesTableView.register(ClassicStateTableViewCell.self, forCellReuseIdentifier: "ClassicGameStateCell")
-        
-//        activityView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 400, height: 400), type: .ballZigZag , color: .red, padding: 20)
-//        self.view.addSubview(activityView)
     }
     
     func setupScoreCard() {
@@ -112,7 +119,6 @@ class ClassicGameViewController: UIViewController {
         setupScoreCard()
         
         view.addSubview(currentGame.scoreView)
-//        view.bringSubviewToFront(currentGame.scoreView)
         NSLayoutConstraint.activate([
             currentGame.scoreView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             currentGame.scoreView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
@@ -250,24 +256,27 @@ class ClassicGameViewController: UIViewController {
     @objc func showMenu() {
         let alert = UIAlertController(title: "Menu", message: "Choose one of the options below.", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Rename Game", style: .default, handler: { (action) in
-            let nameAlert = UIAlertController(title: "Rename Game", message: "Enter the new name", preferredStyle: .alert)
+            let nameAlert = UIAlertController(title: "Rename Game", message: "", preferredStyle: .alert)
             nameAlert.addTextField(configurationHandler: { (textfield) in
                 textfield.placeholder = "Game Name"
+                textfield.autocapitalizationType = .words
             })
             nameAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             nameAlert.addAction(UIAlertAction(title: "Rename", style: .default, handler: { (action: UIAlertAction) in
-                if let textFields = alert.textFields {
-                    guard let text = textFields[0].text else { return }
-                    self.currentGame.gameName = text
+                if let textFields = nameAlert.textFields {
+                    if let textField = textFields.first {
+                        if let text = textField.text {
+                            self.currentGame.gameName = text
+                        }
+                    }
                 }
             }))
+            self.present(nameAlert, animated: true, completion: nil)
         }))
         alert.addAction(UIAlertAction(title: "Save Game", style: .default , handler: { (action) in
-            print("Save Game")
             GameManager().save(game: self.currentGame)
         }))
         alert.addAction(UIAlertAction(title: "Quit Game", style: .destructive , handler: { (action) in
-            print("Quit Game")
             self.dismiss(animated: true, completion: nil)
         }))
         if let popoverController = alert.popoverPresentationController {
@@ -326,12 +335,6 @@ extension ClassicGameViewController: UITableViewDataSource {
         
         return stateCell
     }
-    
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        return UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
-//    }
-    
-    
 }
 
 extension ClassicGameViewController: UITableViewDelegate {
@@ -344,40 +347,15 @@ extension ClassicGameViewController: UITableViewDelegate {
         return 1
     }
     
-//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, handler) in
-//            print("Delete")
-//        }
-//        deleteAction.backgroundColor = .red
-//        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
-//        configuration.performsFirstActionWithFullSwipe = false
-//        return configuration
-//    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let state = playableStates[indexPath.row] //currentGame.statesList[indexPath.row]
-        print("Selected State: \(state.name)")
-        currentGame.foundPlateFrom(state: state, stateIndex: indexPath.row, player: currentPlayer)
-        print("New Score: \(currentPlayer.score)")
+        let state = playableStates[indexPath.row]
+        currentGame.foundPlateFrom(state: state, player: currentPlayer)
     }
-    
-//    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-//        if !currentGame.statesList[indexPath.row].isPlayable {
-//            return false
-//        }
-//        return true
-//    }
-    
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 100
-//    }
-    
     
 }
 
 extension ClassicGameViewController: GameDelegate {
     func didUpdateStatesList() {
-        print("Reload!")
         if let searchText = searchView.searchBar.text {
             playableStates = sortStates(by: searchText)
             statesTableView.reloadData()
@@ -387,15 +365,7 @@ extension ClassicGameViewController: GameDelegate {
         if player.identifier == currentPlayer.identifier {
             //Current player score just changed
         }
-//        scoreView.score = newScore
-//        var alert = UIAlertController(title: "New Score", message: "The new score for \(player.name), is \(newScore)", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "Ok", style: .default , handler: nil))
-//        self.present(alert, animated: true, completion: nil)
     }
-    
-    
-    
-    
     
     // MARK: - Game Delegate UI
     func beganLoading() {

@@ -12,9 +12,22 @@ class PlayGameCollectionViewCell: UICollectionViewCell {
  
     weak var gameNameLabel: UILabel!
     weak var statesFound: UILabel!
+    weak var progressGradient: CAGradientLayer!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.clipsToBounds = true
+        self.layer.cornerRadius = 12
+        self.layer.borderColor = UIColor.black.cgColor
+        self.layer.borderWidth = 1
+        //        self.backgroundColor = UIColor(red: 16/255, green: 52/255, blue: 166/255, alpha: 1.0)
+        let gradient = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = [UIColor.Custom.LightGray.cgColor, UIColor.Custom.RussianGreen.cgColor]
+        gradient.locations = [0.5, 0.0]
+        self.layer.addSublayer(gradient)
+        self.progressGradient = gradient
         
         let nameLabel = UILabel(frame: .zero)
         nameLabel.adjustsFontSizeToFitWidth = true
@@ -42,13 +55,6 @@ class PlayGameCollectionViewCell: UICollectionViewCell {
             statesLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10)
         ])
         self.statesFound = statesLabel
-
-        
-        self.layer.cornerRadius = 12
-        self.layer.borderColor = UIColor.black.cgColor
-        self.layer.borderWidth = 1
-        self.backgroundColor = UIColor(red: 16/255, green: 52/255, blue: 166/255, alpha: 1.0)
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

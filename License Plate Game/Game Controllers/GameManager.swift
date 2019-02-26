@@ -20,25 +20,19 @@ class GameManager {
     }
     
     
-    func save(game: Game) {
-        var gameObject: GameManagedObject!
+    func save(game: ClassicGame) {
+        var gameObject: NSManagedObject!
         if let savedGame = getSavedGame(with: game.gameID) {
             print("Previously saved game")
-            gameObject = savedGame as? GameManagedObject
+            gameObject = savedGame as? NSManagedObject
         }else {
             print("New Saved Game")
             let entity = NSEntityDescription.entity(forEntityName: "Games", in: context)
-            //        let newGame = NSEntityDescription.insertNewObject(forEntityName: "Games", into: context)
             gameObject = GameManagedObject.init(entity: entity!, insertInto: context)
         }
-        
-        
-//        let test = GameManagedObject.init(entity: entity!, insertInto: context)
-//        test.game = game
-        gameObject.game = game
-        
-//        newGame.setValue(game.gameName, forKey: "gameName")
-        
+    
+        gameObject.setValue(game, forKey: "game")
+    
         do {
             try context.save()
             print("Saved Game")
@@ -47,28 +41,8 @@ class GameManager {
         }
     }
     
-    func loadGame(withName: String) {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Games")
-        
-        request.returnsObjectsAsFaults = false
-        
-        do {
-            let results = try context.fetch(request)
-            if !results.isEmpty {
-                for result in results as! [NSManagedObject]{
-                    print("result: \(result)")
-                    print("game: \(result.value(forKey: "game"))")
-                    //                    if let username = result.value(forKey: "username") as? string {
-                    //
-                    //                    }
-                }
-            }
-        }catch {
-            
-        }
-    }
     
-    func getSavedGame(with ID: UUID) -> GameManagedObject? {
+    func getSavedGame(with ID: UUID) -> NSManagedObject? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Games")
         request.returnsObjectsAsFaults = false
         
@@ -76,12 +50,9 @@ class GameManager {
             let results = try context.fetch(request)
             if !results.isEmpty {
                 for result in results as! [NSManagedObject] {
-                    guard let game: Game = (result as! GameManagedObject).game else { continue }
-//                    guard let game: Game = result.value(forKey: "game") as? Game else { continue }
-//                    guard let game: Game = result.game else { continue }
-//                    if game.gameID == ID {
+                    guard let game: ClassicGame = result.value(forKey: "game") as? ClassicGame else { continue }
                     if game.gameID == ID {
-                        return result as? GameManagedObject
+                        return result as? NSManagedObject
                     }
                 }
             }
@@ -91,8 +62,8 @@ class GameManager {
         return nil
     }
     
-    func getSavedGames() -> [Game]? {
-        var games: [Game] = []
+    func getSavedGames() -> [ClassicGame]? {
+        var games: [ClassicGame] = []
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Games")
         request.returnsObjectsAsFaults = false
         
@@ -101,7 +72,7 @@ class GameManager {
             if !results.isEmpty {
                 for result in results as! [NSManagedObject]{
                     print("result: \(result)")
-                    guard let game: Game = result.value(forKey: "game") as? Game else { continue }
+                    guard let game: ClassicGame = result.value(forKey: "game") as? ClassicGame else { continue }
                     print("game: \(game)")
                     games.append(game)
                 }
@@ -115,17 +86,18 @@ class GameManager {
     func deleteGames() {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Games")
         request.returnsObjectsAsFaults = false
-        NSBatchDeleteRequest(fetchRequest: request)
-//        do {
-//            let results = try context.fetch(request)
-//            if !results.isEmpty {
-//                for result in results as! [NSManagedObject]{
-//                    print("Deleted Game")
-//                    context.delete(result)
-//                }
-//            }
-//            try context.save()
-//        }catch {
-//        }
+//        let _ = NSBatchDeleteRequest(fetchRequest: request)
+        do {
+            let results = try context.fetch(request)
+            if !results.isEmpty {
+                for result in results as! [NSManagedObject]{
+                    print("Deleted Game")
+                    context.delete(result)
+                }
+            }
+            try context.save()
+        }catch {
+            
+        }
     }
 }

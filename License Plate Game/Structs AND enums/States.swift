@@ -25,22 +25,49 @@
 //  THE SOFTWARE.
 //
 
-private let _abbreviations = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
-                              "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-                              "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-                              "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-                              "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
+#if swift(>=4.2)
+    private let _abbreviations: Dictionary<States, String> = [.alabama: "AL",       .alaska: "AK",      .arizona: "AZ",       .arkansas: "AR",     .california: "CA",
+                                                              .colorado: "CO",      .connecticut: "CT", .delaware: "DE",      .florida: "FL",      .georgia: "GA",
+                                                              .hawaii: "HI",        .idaho: "ID",       .illinois: "IL",      .indiana: "IN",      .iowa: "IA",
+                                                              .kansas: "KS",        .kentucky: "KY",    .louisiana: "LA",     .maine: "ME",        .maryland: "MD",
+                                                              .massachusetts: "MA", .michigan: "MI",    .minnesota: "MN",     .mississippi: "MS",  .missouri: "MO",
+                                                              .montana: "MT",       .nebraska: "NE",    .nevada: "NV",        .newHampshire: "NH", .newJersey: "NJ",
+                                                              .newMexico: "NM",     .newYork: "NY",     .northCarolina: "NC", .northDakota: "ND",  .ohio: "OH",
+                                                              .oklahoma: "OK",      .oregon: "OR",      .pennsylvania: "PA",  .rhodeIsland: "RI",  .southCarolina: "SC",
+                                                              .southDakota: "SD",   .tennessee: "TN",   .texas: "TX",         .utah: "UT",         .vermont: "VT",
+                                                              .virginia: "VA",      .washington: "WA",  .westVirginia: "WV",  .wisconsin: "WI",    .wyoming: "WY"]
 
-private let _capitals = ["Montgomery",    "Juneau",    "Phoenix",     "Little Rock",    "Sacramento",
-                         "Denver",        "Hartford",  "Dover",       "Tallahassee",    "Atlanta",
-                         "Honolulu",      "Boise",     "Springfield", "Indianapolis",   "Des Moines",
-                         "Topeka",        "Frankfort", "Baton Rouge", "Augusta",        "Annapolis",
-                         "Boston",        "Lansing",   "St. Paul",    "Jackson",        "Jefferson City",
-                         "Helena",        "Lincoln",   "Carson City", "Concord",        "Trenton",
-                         "Santa Fe",      "Albany",    "Raleigh",     "Bismarck",       "Columbus",
-                         "Oklahoma City", "Salem",     "Harrisburg",  "Providence",     "Columbia",
-                         "Pierre",        "Nashville", "Austin",      "Salt Lake City", "Montpelier",
-                         "Richmond",      "Olympia",   "Charleston",  "Madison",        "Cheyenne"]
+    private let _capitals: Dictionary<States, String> = [.alabama: "Montgomery",      .alaska: "Juneau",           .arizona: "Phoenix",        .arkansas: "Little Rock",
+                                                         .california: "Sacramento",   .colorado: "Denver",         .connecticut: "Hartford",   .delaware: "Dover",
+                                                         .florida: "Tallahassee",     .georgia: "Atlanta",         .hawaii: "Honolulu",        .idaho: "Boise",
+                                                         .illinois: "Springfield",    .indiana: "Indianapolis",    .iowa: "Des Moines",        .kansas: "Topeka",
+                                                         .kentucky: "Frankfort",      .louisiana: "Baton Rouge",   .maine: "Augusta",          .maryland: "Annapolis",
+                                                         .massachusetts: "Boston",    .michigan: "Lansing",        .minnesota: "St. Paul",     .mississippi: "Jackson",
+                                                         .missouri: "Jefferson City", .montana: "Helena",          .nebraska: "Lincoln",       .nevada: "Carson City",
+                                                         .newHampshire: "Concord",    .newJersey: "Trenton",       .newMexico: "Santa Fe",     .newYork: "Albany",
+                                                         .northCarolina: "Raleigh",   .northDakota: "Bismarck",    .ohio: "Columbus",          .oklahoma: "Oklahoma City",
+                                                         .oregon: "Salem",            .pennsylvania: "Harrisburg", .rhodeIsland: "Providence", .southCarolina: "Columbia",
+                                                         .southDakota: "Pierre",      .tennessee: "Nashville",     .texas: "Austin",           .utah: "Salt Lake City",
+                                                         .vermont: "Montpelier",      .virginia: "Richmond",       .washington: "Olympia",     .westVirginia: "Charleston",
+                                                         .wisconsin: "Madison",       .wyoming: "Cheyenne"]
+#else
+    private let _abbreviations = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+                                  "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+                                  "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+                                  "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+                                  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
+
+    private let _capitals = ["Montgomery",    "Juneau",    "Phoenix",     "Little Rock",    "Sacramento",
+                             "Denver",        "Hartford",  "Dover",       "Tallahassee",    "Atlanta",
+                             "Honolulu",      "Boise",     "Springfield", "Indianapolis",   "Des Moines",
+                             "Topeka",        "Frankfort", "Baton Rouge", "Augusta",        "Annapolis",
+                             "Boston",        "Lansing",   "St. Paul",    "Jackson",        "Jefferson City",
+                             "Helena",        "Lincoln",   "Carson City", "Concord",        "Trenton",
+                             "Santa Fe",      "Albany",    "Raleigh",     "Bismarck",       "Columbus",
+                             "Oklahoma City", "Salem",     "Harrisburg",  "Providence",     "Columbia",
+                             "Pierre",        "Nashville", "Austin",      "Salt Lake City", "Montpelier",
+                             "Richmond",      "Olympia",   "Charleston",  "Madison",        "Cheyenne"]
+#endif
 
 private let _abbreviationsToStates: [String: States] = {
     var result = [String: States]()
@@ -385,13 +412,20 @@ public enum States: String, CustomStringConvertible, CaseIterable {
     
     /// The abbreviation for `self`.
     public var abbreviation: String {
-        return _abbreviations[hashValue]
+        #if swift(>=4.2)
+            return _abbreviations[self] ?? ""
+        #else
+            return _abbreviations[hashValue]
+        #endif
     }
     
     /// The capital for `self`.
     public var capital: String {
-        print(hashValue)
-        return _capitals[hashValue]
+        #if swift(>=4.2)
+            return _capitals[self] ?? ""
+        #else
+            return _capitals[hashValue]
+        #endif
     }
     
     /// A textual representation of this instance.
@@ -401,18 +435,19 @@ public enum States: String, CustomStringConvertible, CaseIterable {
     
     /// Creates a state from a case-insensitive abbreviation.
     public init?(abbreviation: String) {
-        guard abbreviation.count == 2 else {
-//        guard abbreviation.characters.count == 2 else {
-            return nil
-        }
+        #if swift(>=4)
+//            guard abbreviation.count == 2 else { return nil }
+        #else
+            guard abbreviation.characters.count == 2 else { return nil }
+        #endif
+        
         #if swift(>=3)
             let key = abbreviation.uppercased()
         #else
             let key = abbreviation.uppercaseString
         #endif
-        guard let state = _abbreviationsToStates[key] else {
-            return nil
-        }
+        
+        guard let state = _abbreviationsToStates[key] else { return nil }
         self = state
     }
     
