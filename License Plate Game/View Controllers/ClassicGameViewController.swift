@@ -7,11 +7,8 @@
 //
 
 import UIKit
-//import NVActivityIndicatorView
 
 class ClassicGameViewController: UIViewController {
-    
-    weak var activityView: NVActivityIndicatorView!
     
     var scoreView: Scoreboard!
     var searchView: SearchView!
